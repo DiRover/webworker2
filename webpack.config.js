@@ -19,16 +19,16 @@ module.exports = {
         },
       },
       {
-        test: /web.worker\.js$/,
-        use: { loader: 'worker-loader' },
-      },
-      {
         test: /\.html$/i,
         use: [
           {
             loader: 'html-loader',
           },
         ],
+      },
+      {
+        test: /web.worker\.js$/,
+        use: { loader: 'worker-loader' },
       },
       {
         test: /\.css$/,
