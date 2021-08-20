@@ -27,10 +27,6 @@ module.exports = {
         ],
       },
       {
-        test: /web.worker\.js$/,
-        use: { loader: 'worker-loader' },
-      },
-      {
         test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader, 'css-loader',
