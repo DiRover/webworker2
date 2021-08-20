@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/me43pb373qa39m38?svg=true)](https://ci.appveyor.com/project/DiRover/webworker)
+[![Build status](https://ci.appveyor.com/api/projects/status/k76h6k4onk71uia5?svg=true)](https://ci.appveyor.com/project/DiRover/webworker2)
 
 [PAGE Task 11.3 Project Management Dashboard](https://dirover.github.io/ahj-homework-RxJS-11.2/)
 
