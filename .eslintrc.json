@@ -1,7 +1,8 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "worker": true
     },
     "extends": [
         "airbnb-base"
@@ -11,7 +12,7 @@
         "sourceType": "module"
     },
     "rules": {
-        "no-console": "off",
-        "max-len": "off"
+        "no-console":"off",
+        "max-len":"off"
     }
 }

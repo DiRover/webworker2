@@ -1,20 +1,11 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable no-unused-vars */
-/* eslint-disable max-len */
+/* eslint-disable import/extensions */
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const { GenerateSW } = require('workbox-webpack-plugin');
-const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
-const { InjectManifest } = require('workbox-webpack-plugin');
-
-console.log(__dirname);
 
 module.exports = {
-  entry: './src/main.js',
+  entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
   },
@@ -26,6 +17,10 @@ module.exports = {
         use: {
           loader: 'babel-loader',
         },
+      },
+      {
+        test: /web.worker\.js$/,
+        use: { loader: 'worker-loader' },
       },
       {
         test: /\.html$/i,
@@ -70,10 +65,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css',
-    }),
-    new InjectManifest({
-      swSrc: './src/js/service.worker.js',
-      swDest: 'service.worker.js',
     }),
   ],
 };

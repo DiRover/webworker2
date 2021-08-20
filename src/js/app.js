@@ -1,34 +1,42 @@
 import { fromEvent } from 'rxjs';
-import { url } from './constans';
 import Store from './Store';
-import RenderWidget from './RenderWidget';
+import ListRender from './ListRender';
 import handler from './handler';
+import { hashAlgorithms } from './hashAlgorithms';
+import workerOnload from './workerOnload';
 
-const container = document.querySelector('.container');//получаем основной контейнер для отрисовки приложения
+console.log('code is working');
 
-const store = new Store();//класс для создания и управления потоками RxJS
-const renderWidget = new RenderWidget(store, container)//класс для отрисовки страницы потомками
+const algorithm = document.querySelector('.current');// контейнер для текущего типа алгоритма вычисления
+const hash = document.querySelector('.hash');// контейтнер для текущего хэша файла
 
+const fileElem = document.querySelector('[data-id="file"]');// поле инпута для файла
+const overlap = document.querySelector('[data-id="overlap"]');// перекрыющий элемента для стилизации дропа файла
+const store = new Store(hashAlgorithms);// класс для создания и управления потоками
+const listRender = new ListRender(store, hash, algorithm);// класс для отрисовки элементов страницы
+listRender.init();
 
-if (navigator.serviceWorker) {//проверяем наличие в браузере сервис воркера
-  window.addEventListener('load', async () => {
-    try {//после загрузки страницы пытаемся зарегистрировать сервис воркер
-      await navigator.serviceWorker.register('./service.worker.js');//регистрируем сервис воркер
-    } catch (e) {//отлавливаем ошибку
-      console.log(e);
-    }
-    store.fetchData(url);//отправляем запрос на сервер для получения данных
-    renderWidget.init(); //запускаем рендер страниы
-  });
-
-  navigator.serviceWorker.addEventListener('message', evt => {//получаем сообщения от сервис воркера
-    console.log('message!!')
-    store.getNetworkData(evt.data);//обрабатываем сообщения от сервис воркера
-  });
-
-}
-
-fromEvent(document, 'click').subscribe((e) => { // обрабатваем все клики на странице технологией RxJS
-  handler(e.target, store, url);// отработчик кликов
+// передаём клик с перекрывающего элемента на нижележащий инпут
+overlap.addEventListener('click', () => {
+  fileElem.dispatchEvent(new MouseEvent('click'));
 });
 
+fileElem.addEventListener('change', (e) => {
+  const file = e.target.files[0];// получаем дропнутый или загруженный в поле инпут файл
+  workerOnload({ file, store });// передаём его веб воркеру
+});
+
+overlap.addEventListener('dragover', (e) => {
+  e.preventDefault();
+});
+
+overlap.addEventListener('drop', (e) => {
+  e.preventDefault();
+  console.log(e.dataTransfer.files[0]);
+  const file = e.dataTransfer.files[0];// получаем дропнутый или загруженный в поле инпут файл
+  workerOnload({ file, store });// передаём его веб воркеру
+});
+
+fromEvent(algorithm, 'click').subscribe((e) => { // обрабатваем все клики на странице технологией RxJS
+  handler(e.target, store);// отработчик кликов
+});
