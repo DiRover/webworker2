@@ -14,7 +14,7 @@ const { InjectManifest } = require('workbox-webpack-plugin');
 console.log(__dirname);
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
   },
